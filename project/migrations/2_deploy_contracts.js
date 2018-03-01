@@ -1,10 +1,12 @@
 var PetrolPrice = artifacts.require("PetrolPrice");
 
 module.exports = function(deployer, network, accounts) {
-  var resolver = 0;
-  if (network == "test" || network == "development") {
-    resolver = "0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475";
-  }
+    var resolver = 0;
+    if (network == "testing" || network == "development") {
+      // There's an issue here, name ethereum-bridge doesn't always
+      // use this address....
+      resolver = "0x2EfB9FF4A787b28C7c1429817b64BeE2E740ee55";
+    }
 
-  deployer.deploy(PetrolPrice, resolver);
+    deployer.deploy(PetrolPrice, resolver);
 };
