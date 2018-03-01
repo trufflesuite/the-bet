@@ -1,11 +1,3 @@
-/*
-var PetrolPrice = artifacts.require("PetrolPrice");
-
-module.exports = function(deployer) {
-  deployer.deploy(PetrolPrice);
-};
-*/
-
 var PetrolPrice = artifacts.require("PetrolPrice");
 
 module.exports = function(deployer, network, accounts) {

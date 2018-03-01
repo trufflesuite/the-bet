@@ -23,8 +23,11 @@ contract PetrolPrice is usingOraclize {
 
     function __callback(bytes32 myid, string result) public {
         require(msg.sender == oraclize_cbAddress());
+
+        // Was ---> if (msg.sender != oraclize_cbAddress()) throw;
         newPetrolPrice(result);
-        PetrolPriceUSD = parseInt(result, 2); // Will output USD cents
+        PetrolPriceUSD = parseInt(result, 2); // let's save it as $ cents
+        // do something with the USD Diesel price
     }
 
     function update() payable public {
