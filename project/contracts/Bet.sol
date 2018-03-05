@@ -3,25 +3,25 @@ import "./oraclizeAPI.sol"; // Used v0.5
 
 contract Bet is usingOraclize {
 
-    address public outcome;
+    uint public outcome;
     uint public jackpot;
     mapping(address => uint) public bettors;
 
     event newOraclizeQuery(string description);
-    event newOutcome(string winner);
+    event newOutcome(string result);
 
     function Bet(address resolver) public {
         OAR = OraclizeAddrResolverI(resolver);
         update(); // first check at contract creation
     }
 
-    function wager() public payable {
-      bettors[msg.sender] = msg.value;
+    function wager(uint prediction) public payable {
+      bettors[msg.sender] = prediction;
       jackpot += msg.value;
     }
 
     function claimWinnings() public {
-      if (bettors[msg.sender] != 0 && outcome == msg.sender){
+      if (bettors[msg.sender] == outcome){
         msg.sender.transfer(jackpot);
       }
     }
@@ -29,7 +29,7 @@ contract Bet is usingOraclize {
     function __callback(bytes32 myid, string result) public {
         require(msg.sender == oraclize_cbAddress());
         newOutcome(result);
-        outcome = parseAddr(result);
+        outcome = parseInt(result);
     }
 
     function update() payable public {

@@ -17,7 +17,7 @@ contract("Bet", function(accounts){
 
         // Then let's check our variable to make sure it updated.
         instance.outcome().then(outcome => {
-          assert(outcome === "0x5044eb7f03a184507b842362ca35fff474429783");
+          assert(parseInt(outcome) === 55);
           event.stopWatching();
           done();
         })
@@ -30,7 +30,7 @@ contract("Bet", function(accounts){
     const bet = await Bet.deployed();
     const initialJackpot = await bet.jackpot();
 
-    await bet.wager({from: accounts[0], value: amountToBet});
+    await bet.wager(55, {from: accounts[0], value: amountToBet});
 
     const newJackpot = await bet.jackpot();
 
