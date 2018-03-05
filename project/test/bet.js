@@ -2,7 +2,7 @@ const Bet = artifacts.require("Bet");
 
 contract("Bet", function(accounts){
 
-  it.only('should fetch the bet outcome on deployment', function(done){
+  it('should fetch the bet outcome on deployment', function(done){
     Bet.deployed().then(instance => {
 
       // Listen for the event that gets fired when Oraclize runs
@@ -10,7 +10,6 @@ contract("Bet", function(accounts){
       const event = instance.newOutcome();
 
       event.watch((err, result) => {
-        console.log('event fired!')
         if (err){
           event.stopWatching();
           done(err);
@@ -27,7 +26,7 @@ contract("Bet", function(accounts){
   });
 
   it('should add a bet and pay out a jackpot', async function() {
-    const amountToBet = 10;
+    const amountToBet = web3.toWei(1, 'ether');
     const bet = await Bet.deployed();
     const initialJackpot = await bet.jackpot();
 
@@ -35,12 +34,12 @@ contract("Bet", function(accounts){
 
     const newJackpot = await bet.jackpot();
 
-    assert.equal(initialJackpot.toNumber() + 10, newJackpot.toNumber(), "Jackpot should increase");
+    assert.equal(initialJackpot.toNumber() + amountToBet, newJackpot.toNumber(), "Jackpot should increase");
 
-    const initialAccountBalance = web3.eth.getBalance(accounts[0]);
+    const initialBalance = web3.eth.getBalance(accounts[0]);
     await bet.claimWinnings({from: accounts[0]});
-    const newAccountBalance = web3.eth.getBalance(accounts[0]);
+    const newBalance = web3.eth.getBalance(accounts[0]);
 
-    assert(newAccountBalance.toNumber() > initialAccountBalance.toNumber());
+    assert(newBalance.toNumber() > initialBalance.toNumber(), "Winner should have gotten something");
   });
 });
