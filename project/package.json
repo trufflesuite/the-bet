@@ -1,0 +1,15 @@
+{
+  "name": "the-bet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test --network testing",
+    "ganache": "ganache-cli --account='0xe1dd5defce7f1769c472087b0f98f22faac8808402bc01ac8f540a197f1c950c,100000000000000000000000' --account='0xc71d4b3dd65d23751eacf92f6be2c041198561d52f6e533540fc5d9490b1b013,100000000000000000000000'"
+  },
+  "author": "",
+  "license": "ISC"
+}
