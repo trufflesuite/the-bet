@@ -2,7 +2,7 @@ const Bet = artifacts.require("Bet");
 
 contract("Bet", function(accounts){
 
-  it('should fetch the bet outcome on deployment', function(done){
+  it.only('should fetch the bet outcome on deployment', function(done){
     Bet.deployed().then(instance => {
 
       // Listen for the event that gets fired when Oraclize runs
@@ -10,6 +10,7 @@ contract("Bet", function(accounts){
       const event = instance.newOutcome();
 
       event.watch((err, result) => {
+        console.log('event fired!')
         if (err){
           event.stopWatching();
           done(err);
@@ -17,7 +18,7 @@ contract("Bet", function(accounts){
 
         // Then let's check our variable to make sure it updated.
         instance.outcome().then(outcome => {
-          assert(outcome === "noResult");
+          assert(outcome === "0x5044eb7f03a184507b842362ca35fff474429783");
           event.stopWatching();
           done();
         })

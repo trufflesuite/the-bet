@@ -3,12 +3,12 @@ import "./oraclizeAPI.sol"; // Used v0.5
 
 contract Bet is usingOraclize {
 
-    uint public outcome;
-    uint jackpot;
-    mapping bettors (address => uint);
+    address public outcome;
+    uint public jackpot;
+    mapping(address => uint) public bettors;
 
     event newOraclizeQuery(string description);
-    event newOutcome(string price);
+    event newOutcome(address winner);
 
     function Bet(address resolver) public {
         OAR = OraclizeAddrResolverI(resolver);
@@ -22,11 +22,11 @@ contract Bet is usingOraclize {
 
     function claimWinnings() public {
       if (outcome == msg.sender){
-        require(msg.sender.transfer(jackpot));
+        msg.sender.transfer(jackpot);
       }
     }
 
-    function __callback(bytes32 myid, string result) public {
+    function __callback(bytes32 myid, address result) public {
         require(msg.sender == oraclize_cbAddress());
         newOutcome(result);
         outcome = result;
@@ -34,9 +34,6 @@ contract Bet is usingOraclize {
 
     function update() payable public {
         newOraclizeQuery("Oraclize query was sent, standing by for the answer..");
-        oraclize_query("URL", "xml(https://github.com/trufflesuite/the-bet/tree/master/xml/outcome.xml).bet.outcome");
+        oraclize_query("URL", "xml(https://raw.githubusercontent.com/trufflesuite/the-bet/master/xml/outcome.xml).bet.outcome");
     }
-
-
-
 }
