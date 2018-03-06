@@ -42,4 +42,8 @@ contract("Bet", function(accounts){
 
     assert(newBalance.toNumber() > initialBalance.toNumber(), "Winner should have gotten something");
   });
+
+  it.only('simulate a deployment', async function(){
+    await Bet.new("0x6f485c8bf6fc43ea212e93bbf8ce046c7f1cb475");
+  });
 });
